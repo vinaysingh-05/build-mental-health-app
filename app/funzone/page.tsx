@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Gamepad2,
@@ -24,6 +24,11 @@ export default function FunZonePage() {
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null)
   const [gameScore, setGameScore] = useState(0)
   const [joke, setJoke] = useState('')
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const activities = [
     {
@@ -285,29 +290,31 @@ export default function FunZonePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-orange-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-pink-900/20">
       {/* Floating Sparkles */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            animate={{
-              y: [null, Math.random() * window.innerHeight],
-              x: [null, Math.random() * window.innerWidth],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: 'linear',
-            }}
-          >
-            <Sparkles className="h-6 w-6 text-yellow-400 opacity-50" />
-          </motion.div>
-        ))}
-      </div>
+      {mounted && (
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+              }}
+              animate={{
+                y: [null, Math.random() * window.innerHeight],
+                x: [null, Math.random() * window.innerWidth],
+              }}
+              transition={{
+                duration: Math.random() * 10 + 10,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'linear',
+              }}
+            >
+              <Sparkles className="h-6 w-6 text-yellow-400 opacity-50" />
+            </motion.div>
+          ))}
+        </div>
+      )}
 
       {/* Header */}
       <motion.header
